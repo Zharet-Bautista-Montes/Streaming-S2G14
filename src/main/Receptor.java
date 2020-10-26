@@ -1,12 +1,14 @@
 package main;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 import javax.swing.*;
 
-public class Receptor extends JFrame
+public class Receptor extends JFrame implements ActionListener
 {
 	private static Scanner parametrizador = new Scanner(System.in);
 
@@ -14,23 +16,40 @@ public class Receptor extends JFrame
 
 	private static int[] puertos = new int[3];
 	
-	private MulticastSocket actual = null; 
+	private DatagramSocket actual = null; 
 	
 	private Receptor()
 	{
 		super();
 		setLayout(new BorderLayout());
 		visualizar();
-		setSize(1500, 1200);
+		setSize(1200, 1000);
 		setVisible(true);
 	}
 	
 	private void visualizar()
 	{
-		JPanel opciones = new JPanel();
-		add(opciones, BorderLayout.NORTH);
-		JMenu menu = new JMenu();
-		opciones.add(menu);
+		JMenuItem c1 = new JMenuItem("Canal 1");
+		JMenuItem c2 = new JMenuItem("Canal 2");
+		JMenuItem c3 = new JMenuItem("Canal 3");
+		JMenu menu = new JMenu("Lista de canales");
+		menu.add(c1); menu.add(c2); menu.add(c3);
+		JMenuBar mbarra = new JMenuBar();
+		JMenuItem stop = new JMenuItem("Parar");
+		stop.setEnabled(false);
+		mbarra.add(menu); mbarra.add(stop);
+		setJMenuBar(mbarra);
+		mbarra.setVisible(true);
+	}
+	
+	private void reproducir()
+	{
+		try 
+		{
+			actual = new DatagramSocket();
+		} 
+		catch (Exception e) 
+		{	e.printStackTrace(); 	}
 	}
 
 	public static void main(String[] args) 
@@ -50,5 +69,12 @@ public class Receptor extends JFrame
 		}
 		catch (Exception e) 
 		{	e.printStackTrace(); 	}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
